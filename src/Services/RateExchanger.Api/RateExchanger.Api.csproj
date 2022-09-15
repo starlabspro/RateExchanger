@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Services\RateExchanger\src\RateExchanger.csproj" />
+      <ProjectReference Include="..\RateExchanger\RateExchanger.csproj" />
     </ItemGroup>
 
 </Project>
