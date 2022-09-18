@@ -1,7 +1,4 @@
-﻿using BuildingBlocks.Hangfire;
-using BuildingBlocks.Hangfire.Jobs;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace RateExchanger.Extensions;
@@ -24,12 +21,5 @@ public static class ServiceCollectionExtensions
                     Title = "RateExchanger API"
                 });
             });
-    }
-
-    public static void AddRateExchangerJob(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.Configure<HangFireOptions>(configuration.GetSection("HangFire"));
-
-        services.AddSingleton<RateExchangerJob>();
     }
 }
