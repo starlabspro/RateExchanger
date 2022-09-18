@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuildingBlocks.Repo.Contracts
 {
-    internal interface IUserAttemptsRepo
+    public interface IUserAttemptsRepo
     {
         void Insert(UserAttempts item);
     }

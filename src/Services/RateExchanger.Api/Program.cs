@@ -1,6 +1,7 @@
 using BuildingBlocks.Caching.Contract;
 using BuildingBlocks.Caching.Service;
 using BuildingBlocks.EFCore;
+using BuildingBlocks.Modules;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ builder.Services.AddApiVersioning(options =>
 });
 
 builder.Services.AddTransient<ICacheManager, CacheManager>();
+CoreModules.Load(builder.Services); //here we are registering some of the services
 
 builder.Services.AddDbContext<RateExchangerDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))); //this should be done for every project that has to use this
 // builder.Services.AddVersionedApiExplorer();

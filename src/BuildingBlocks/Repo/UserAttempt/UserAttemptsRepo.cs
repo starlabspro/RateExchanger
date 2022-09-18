@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Caching.Contract;
 using BuildingBlocks.EFCore;
+using BuildingBlocks.Repo.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BuildingBlocks.Repo.UserAttempt
 {
-    public class UserAttemptsRepo
+    public class UserAttemptsRepo: IUserAttemptsRepo
     {
         private readonly RateExchangerDbContext _context;
         private readonly ICacheManager _cacheManager;
