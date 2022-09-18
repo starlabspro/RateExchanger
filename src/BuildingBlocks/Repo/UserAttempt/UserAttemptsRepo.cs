@@ -20,7 +20,7 @@ namespace BuildingBlocks.Repo.UserAttempt
 
         public void Insert(UserAttempts item)
         {
-            _cacheManager.InsertInCache(item.Id);
+            _cacheManager.Insert(item.Id);
             _context.AddAsync(item);
         }
     }
