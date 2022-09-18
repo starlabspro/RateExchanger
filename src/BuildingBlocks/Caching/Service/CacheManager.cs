@@ -10,6 +10,9 @@ namespace BuildingBlocks.Caching.Service
     public class CacheManager : ICacheManager
     {
         private Dictionary<string, object> _items = null;
+        private const string keyPrefix = "user";
+        const int timeWillExpire = 60;
+
         public CacheManager()
         {
             _items = new Dictionary<string, object>();
@@ -31,7 +34,7 @@ namespace BuildingBlocks.Caching.Service
                 throw new ArgumentException("An element with the same key already exists.");
 
             //Set timer
-            Timer t = new Timer(new TimerCallback(TimerProc),key, cacheTime, Timeout.Infinite);
+            Timer t = new Timer(new TimerCallback(TimerProc), key, cacheTime, Timeout.Infinite);
 
             _items.Add(key, obj);
         }
@@ -50,7 +53,7 @@ namespace BuildingBlocks.Caching.Service
                 throw new ArgumentNullException("key is null.");
 
             if (!_items.Keys.Contains(key))
-                throw new KeyNotFoundException("key does not exist in the collection.");
+                return null;
 
             return _items[key];
         }
@@ -58,6 +61,30 @@ namespace BuildingBlocks.Caching.Service
         public void Clear()
         {
             _items.Clear();
+        }
+
+        public void RemoveInsert(string key, object obj, int cacheTime)
+        {
+            if (Get(key)==null)
+            {
+                Add(key, obj, cacheTime);
+                return;
+            }
+
+            Remove(key);
+            Add(key, obj, cacheTime);
+        }
+
+        public void InsertInCache(int userId)
+        {
+            var cacheKey = keyPrefix+userId;
+
+            var attempts = (int)Get(cacheKey);
+            if (attempts == null)
+            {
+                Add(cacheKey, 1, timeWillExpire);
+            }
+            RemoveInsert(cacheKey, attempts++, timeWillExpire);
         }
     }
 }

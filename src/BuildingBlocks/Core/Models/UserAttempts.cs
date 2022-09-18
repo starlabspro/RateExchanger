@@ -6,6 +6,7 @@ namespace BuildingBlocks.EFCore
     public class UserAttempts
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string Username { get; set; } = default;
         public DateTime RequestMadeOn { get; set; }
     }
