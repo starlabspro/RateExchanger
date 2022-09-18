@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Jobs;
-using BuildingBlocks.Options;
+﻿using BuildingBlocks.Hangfire;
+using BuildingBlocks.Hangfire.Jobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;

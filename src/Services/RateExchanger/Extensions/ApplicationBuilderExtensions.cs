@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Jobs;
+﻿using BuildingBlocks.Hangfire;
+using BuildingBlocks.Hangfire.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

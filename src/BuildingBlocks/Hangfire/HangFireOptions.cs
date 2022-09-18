@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Options
+﻿namespace BuildingBlocks.Hangfire
 {
     public class HangFireOptions
     {

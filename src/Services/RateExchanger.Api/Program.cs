@@ -1,8 +1,7 @@
+using BuildingBlocks.FixerClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using RateExchanger.Extensions;
-using Hangfire;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +19,7 @@ builder.Services.AddApiVersioning(options =>
     options.ApiVersionReader = ApiVersionReader.Combine(new HeaderApiVersionReader("api-version"),
         new UrlSegmentApiVersionReader());
 });
+builder.Services.AddFixerClient(builder.Configuration);
 
 var app = builder.Build();
 
@@ -27,11 +27,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        options.RoutePrefix = string.Empty;
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -40,7 +36,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseRateExchangerJob();
-app.UseHangfireDashboard("/hangfire");
+// app.UseRateExchangerJob();
+// app.UseHangfireDashboard("/hangfire");
 
 app.Run();
