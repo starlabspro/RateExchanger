@@ -25,7 +25,7 @@ namespace BuildingBlocks.Caching.Service
             Remove(key);
         }
 
-        public void Add(string key, object obj, int cacheTime = Timeout.Infinite)
+        private void Add(string key, object obj, int cacheTime = Timeout.Infinite)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key is null.");
@@ -63,7 +63,7 @@ namespace BuildingBlocks.Caching.Service
             _items.Clear();
         }
 
-        public void RemoveInsert(string key, object obj, int cacheTime)
+        private void RemoveInsert(string key, object obj, int cacheTime)
         {
             if (Get(key)==null)
             {
@@ -75,7 +75,7 @@ namespace BuildingBlocks.Caching.Service
             Add(key, obj, cacheTime);
         }
 
-        public void InsertInCache(int userId)
+        public void Insert(int userId)
         {
             var cacheKey = keyPrefix+userId;
 
