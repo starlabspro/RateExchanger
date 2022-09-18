@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "src\Services\RateE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "src\ApiGateway\src\ApiGateway\ApiGateway.csproj", "{CDCBADB3-C9CA-47B4-ADF6-55161BB5AD50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "src\BuildingBlocks\src\BuildingBlocks\BuildingBlocks.csproj", "{F8132E7B-D21E-4B94-BEF3-3605A4A233B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "src\BuildingBlocks\src\BuildingBlocks.csproj", "{F8132E7B-D21E-4B94-BEF3-3605A4A233B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateExchanger", "src\Services\RateExchanger\src\RateExchanger\RateExchanger.csproj", "{5EC49094-DED9-400E-AF5A-224FCCE247A4}"
 EndProject
