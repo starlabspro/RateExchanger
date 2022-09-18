@@ -15,4 +15,8 @@
       <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="RestSharp" Version="108.0.1" />
+    </ItemGroup>
+
 </Project>

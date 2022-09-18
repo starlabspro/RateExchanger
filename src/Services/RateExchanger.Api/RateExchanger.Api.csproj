@@ -9,6 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Hangfire" Version="1.7.31" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\RateExchanger\RateExchanger.csproj" />
     </ItemGroup>
 
