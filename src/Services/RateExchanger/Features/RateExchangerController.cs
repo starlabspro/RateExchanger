@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace RateExchanger.Features;
 
 [ApiController]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 public class RateExchangerController : ControllerBase
 {

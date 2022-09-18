@@ -4,6 +4,7 @@ using RestSharp;
 
 namespace BuildingBlocks.FixerClient
 {
+    /// <inheritdoc />
     public class FixerClient : IFixerClient
     {
         private readonly RestClient _client;
@@ -14,6 +15,7 @@ namespace BuildingBlocks.FixerClient
                 .AddDefaultHeader("apikey", fixerOptions.Value.ApiKey);
         }
 
+        /// <inheritdoc />
         public async Task<ConvertResponse?> ConvertAsync(string to, string from, decimal amount)
         {
             var response = await _client.GetJsonAsync<ConvertResponse>(

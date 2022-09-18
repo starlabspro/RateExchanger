@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BuildingBlocks.FixerClient
 {
+    /// <summary>
+    /// Configures the FixerClient.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
         public static void AddFixerClient(this IServiceCollection services, IConfiguration configuration)
