@@ -8,13 +8,13 @@ RateExchanger has 2 main services:
 Does the following:
 * Fetches the latest rates from Fixer.io
 * Stores the rates in a database
-* Stores the rates in a cache
+* Stores the rates in a cache (updated after 30minutes per Currency)
 * Provides an API to get the latest rates through a REST API
 
 ## UserRateExchanger Service
 Does the following:
 * Provides an API for the User to get the latest rates through a REST API
-* Checks the request limit for the User
+* Checks the request limit for the User (Set to 10 requests per hour)
 * Calls the RateExchanger Service to get the latest rates
 
 ## How to run the application
@@ -26,7 +26,9 @@ Does the following:
 * Call the API using Postman or any other tool
 * The API is documented using Swagger
 * The API to be called is https://localhost:5021/api/v1/UserRateExchanger
-* The request and response samples can be found here: [link](docs/requests-and-responses)
+* The request and response samples can be found here: [this folder](docs/requests-and-responses)
+* We used SQL Server as our database - configure the `DefaultConnection` string in `appsettings.json` and update the database using `Update-Database` command in Package Manager Console
+* Note that the Migrations are located in: [this folder](src/Services/RateExchanger/src/RateExchanger/Data) so the `Update-Database` command should be run from this folder or the project and/or context should be set inside the command.
 
 ## NOTES
 * Caching is done in memory - meaning that if the service is restarted, the cache will be empty
