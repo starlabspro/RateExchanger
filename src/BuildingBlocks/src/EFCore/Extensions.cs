@@ -27,12 +27,21 @@ public static class Extensions
     public static IApplicationBuilder UseMigration<TContext>(this IApplicationBuilder app, IWebHostEnvironment env)
         where TContext : DbContext, IDbContext
     {
-        // TODO: Migrate data here
+        MigrateDatabaseAsync<TContext>(app.ApplicationServices).GetAwaiter().GetResult();
 
         if (!env.IsEnvironment("test"))
             SeedDataAsync(app.ApplicationServices).GetAwaiter().GetResult();
 
         return app;
+    }
+
+    private static async Task MigrateDatabaseAsync<TContext>(IServiceProvider serviceProvider)
+        where TContext : DbContext, IDbContext
+    {
+        using var scope = serviceProvider.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<TContext>();
+        await context.Database.MigrateAsync();
     }
 
     private static async Task SeedDataAsync(IServiceProvider serviceProvider)

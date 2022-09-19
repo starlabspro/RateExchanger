@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using RateExchanger;
 using RateExchanger.Data;
+using RateExchanger.Features;
 using RateExchanger.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<RateExchangerContext>(builder.Configuration);
 builder.Services.AddFixerClient(builder.Configuration);
 builder.Services.AddInMemoryCache(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(RateExchangerProfile).Assembly);
+builder.Services.AddTransient<ICacheManager<Dictionary<string, decimal>?>, RateExchangerCacheManager>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -46,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 var loggerFactory = app.Services.GetService<ILoggerFactory>();
 app.UseExceptionHandler(loggerFactory!);
+
+app.UseMigration<RateExchangerContext>(app.Environment);
 
 app.UseHttpsRedirection();
 

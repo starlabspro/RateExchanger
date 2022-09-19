@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using UserRateExchanger;
+using UserRateExchanger.Features;
 using UserRateExchanger.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationHandle
 builder.Services.AddRateExchangerService(builder.Configuration);
 builder.Services.AddInMemoryCache(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(UserRateExchangerProfile).Assembly);
+builder.Services.AddTransient<ICacheManager<List<DateTime>>, RequestLimitCacheManager>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

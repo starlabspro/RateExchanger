@@ -1,7 +1,8 @@
 ﻿namespace BuildingBlocks.Caching;
 
-public interface ICacheManager<in T>
+public interface ICacheManager<T>
 {
-    bool IsValid(T value);
-    bool Update(T value);
+    Task<T?> GetAsync(string key, CancellationToken cancellationToken);
+    Task<bool> IsValidAsync(string key, CancellationToken cancellationToken);
+    Task UpdateAsync(string key, T? data, CancellationToken cancellationToken);
 }

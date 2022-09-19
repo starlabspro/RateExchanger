@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Caching;
 using BuildingBlocks.FixerClient;
-using EasyCaching.Core;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RateExchanger.Data;
 using RateExchanger.Data.Models;
@@ -16,36 +14,30 @@ public class GetRateCommandHandler : IRequestHandler<GetRateCommand, GetRateResp
     private readonly ILogger<GetRateCommandHandler> _logger;
     private readonly RateExchangerContext _rateExchangerContext;
     private readonly IFixerClient _fixerClient;
-    private readonly IOptions<CacheOptions> _cacheOptions;
-    private readonly IEasyCachingProvider _cachingProvider;
     private readonly IMapper _mapper;
+    private readonly ICacheManager<Dictionary<string, decimal>> _cacheManager;
 
     public GetRateCommandHandler(
         ILogger<GetRateCommandHandler> logger,
         RateExchangerContext rateExchangerContext,
         IFixerClient fixerClient,
-        IEasyCachingProviderFactory factory,
-        IOptions<CacheOptions> cacheOptions,
-        IMapper mapper)
+        IMapper mapper,
+        ICacheManager<Dictionary<string, decimal>> cacheManager)
     {
         _logger = logger;
         _rateExchangerContext = rateExchangerContext;
         _fixerClient = fixerClient;
-        _cacheOptions = cacheOptions;
         _mapper = mapper;
-
-        _cachingProvider = factory.GetCachingProvider(_cacheOptions.Value.CacheName);
+        _cacheManager = cacheManager;
     }
 
     public async Task<GetRateResponseDto> Handle(GetRateCommand request, CancellationToken cancellationToken)
     {
-        var cachedExchangeRates =
-            await _cachingProvider.GetAsync<Dictionary<string, decimal>>(request.BaseCurrency, cancellationToken);
-
-        if (cachedExchangeRates.HasValue)
+        var cachedValues = await _cacheManager.GetAsync(request.BaseCurrency, cancellationToken);
+        if (cachedValues != null)
         {
             var response = _mapper.Map<GetRateResponseDto>(request);
-            response.Rates = cachedExchangeRates.Value;
+            response.Rates = cachedValues;
             return response;
         }
 
@@ -56,8 +48,7 @@ public class GetRateCommandHandler : IRequestHandler<GetRateCommand, GetRateResp
             _logger.LogInformation("Failed to get latest exchange rates.");
         }
 
-        await _cachingProvider.SetAsync(latestExchangeRates.Base, latestExchangeRates.Rates,
-            TimeSpan.FromMilliseconds(_cacheOptions.Value.ExpirationTime), cancellationToken);
+        await _cacheManager.UpdateAsync(request.BaseCurrency, latestExchangeRates.Rates, cancellationToken);
 
         await _rateExchangerContext.RateExchanges.AddAsync(new RateExchange
         {

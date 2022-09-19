@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Caching;
 using BuildingBlocks.Contracts;
-using EasyCaching.Core;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using UserRateExchanger.Features;
 
@@ -12,8 +11,7 @@ namespace UserRateExchanger.UnitTests;
 public class GetUserRateCommandHandlerTests
 {
     private readonly Mock<ILogger<GetUserRateCommandHandler>> _loggerMock;
-    private readonly Mock<IOptions<CacheOptions>> _cacheOptionsMock;
-    private readonly Mock<IEasyCachingProvider> _cachingProviderMock;
+    private readonly Mock<ICacheManager<List<DateTime>>> _cacheManagerMock;
     private readonly Mock<IRateExchangerService> _rateExchangerServiceMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly GetUserRateCommandHandler _userRateCommandHandlerStub;
@@ -21,13 +19,11 @@ public class GetUserRateCommandHandlerTests
     public GetUserRateCommandHandlerTests()
     {
         _loggerMock = new Mock<ILogger<GetUserRateCommandHandler>>();
-        _cacheOptionsMock = new Mock<IOptions<CacheOptions>>();
-        _cachingProviderMock = new Mock<IEasyCachingProvider>();
+        _cacheManagerMock = new Mock<ICacheManager<List<DateTime>>>();
         _rateExchangerServiceMock = new Mock<IRateExchangerService>();
         _mapperMock = new Mock<IMapper>();
-        _userRateCommandHandlerStub = new GetUserRateCommandHandler(_loggerMock.Object, _cacheOptionsMock.Object,
-            _cachingProviderMock.Object, _rateExchangerServiceMock.Object, _mapperMock.Object);
-
+        _userRateCommandHandlerStub = new GetUserRateCommandHandler(_loggerMock.Object,
+            _rateExchangerServiceMock.Object, _mapperMock.Object, _cacheManagerMock.Object);
     }
 
     [Fact]
@@ -35,49 +31,42 @@ public class GetUserRateCommandHandlerTests
     {
         var userRateCommand = new GetUserRateCommand()
         {
-            BaseCurrency = "Euro",
+            BaseCurrency = "EUR",
             OtherCurrencies = new[]
             {
-                "Pound",
-                "Dollar"
+                "GBR",
+                "USD"
             }
         };
         var userRateResponseDto = new GetUserRateResponseDto
         {
-            BaseCurrency = "Euro",
+            BaseCurrency = "EUR",
             Rates = new Dictionary<string, decimal>()
             {
-                { "Euro", Decimal.MinValue }
+                { "EUR", Decimal.MinValue }
             }
         };
         var exchangeRateRequest = new GetExchangeRateRequest()
         {
-            BaseCurrency = "Euro",
+            BaseCurrency = "EUR",
             OtherCurrencies = new []
             {
-                "Dollar",
-                "Pound"
+                "USD",
+                "GBR"
             }
         };
-        
-        var exchangeRateResponse = new GetExchangeRateResponse("Euro", new Dictionary<string, decimal>());
-        var cacheOptions = new CacheOptions()
+
+        var exchangeRateResponse = new GetExchangeRateResponse("EUR", new Dictionary<string, decimal>());
+
+        var dateTimestamps = new List<DateTime>()
         {
-            ExpirationTime = 60,
-            SizeLimit = 2,
-            CacheName = "test"
+            new(2022, 3, 4, 23, 2, 3),
+            new(2022, 3, 4, 20, 2, 3),
+            new(2022, 3, 4, 13, 2, 1)
         };
-        
-        var list = new CacheValue<List<DateTime>>(new List<DateTime>()
-        {
-            new DateTime(2022, 3, 4, 23, 2, 3),
-            new DateTime(2022, 3, 4, 20, 2, 3),
-            new DateTime(2022, 3, 4, 13, 2, 1)
-        }, true);
-        
-         _cachingProviderMock.Setup(x => x.GetAsync<List<DateTime>>(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .Returns(Task.FromResult(list));
-         _cacheOptionsMock.Setup(x => x.Value).Returns(cacheOptions);
+
+        _cacheManagerMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(dateTimestamps);
         _mapperMock.Setup(x => x.Map<GetExchangeRateRequest>(It.IsAny<GetUserRateCommand>()))
             .Returns(exchangeRateRequest);
         _rateExchangerServiceMock.Setup(x => x.GetExchangeRateAsync(exchangeRateRequest))
@@ -87,7 +76,6 @@ public class GetUserRateCommandHandlerTests
 
         var result = _userRateCommandHandlerStub.Handle(userRateCommand, default);
 
-        Assert.NotNull(result);
-        
+        result.Should().NotBeNull();
     }
 }
