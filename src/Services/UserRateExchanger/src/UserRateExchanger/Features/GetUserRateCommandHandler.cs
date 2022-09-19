@@ -40,7 +40,7 @@ public class GetUserRateCommandHandler : IRequestHandler<GetUserRateCommand, Get
         var exchangeRates =
             await _rateExchangerService.GetExchangeRateAsync(_mapper.Map<GetExchangeRateRequest>(command));
 
-        await AddLatestRequestDateTimestampAsync(command.UserId, cachedUserRequests.Value, cancellationToken);
+        await AddLatestRequestDateTimestampAsync(command.UserId, cachedUserRequests, cancellationToken);
 
         _logger.LogInformation("User {UserId} got the latest exchange rates for {CurrencyCode}",
             command.UserId, command.BaseCurrency);
@@ -67,11 +67,16 @@ public class GetUserRateCommandHandler : IRequestHandler<GetUserRateCommand, Get
 
     private async Task AddLatestRequestDateTimestampAsync(
         int userId,
-        List<DateTime> requestDateTimestamps,
+        CacheValue<List<DateTime>> cachedUserRequestsDateTimestamps,
         CancellationToken cancellationToken)
     {
-        requestDateTimestamps.Add(DateTime.UtcNow);
-        await _cachingProvider.SetAsync($"{userId}", requestDateTimestamps,
+        // Initialize the list if it's null
+        var dateTimestamps = cachedUserRequestsDateTimestamps.HasValue
+            ? cachedUserRequestsDateTimestamps.Value
+            : new List<DateTime>();
+
+        dateTimestamps.Add(DateTime.UtcNow);
+        await _cachingProvider.SetAsync($"{userId}", dateTimestamps,
             TimeSpan.FromMilliseconds(_cacheOptions.Value.ExpirationTime), cancellationToken);
     }
 }

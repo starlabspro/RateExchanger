@@ -8,24 +8,18 @@ public static class TestHelper
     public static GetUserRateCommand GenerateValidGetUserRateCommand()
     {
         return new Faker<GetUserRateCommand>()
-            .CustomInstantiator(f =>
-                new GetUserRateCommand(
-                    f.Random.Int(1, 10),
-                    f.Finance.Currency().Code,
-                    new[] { f.Finance.Currency().Code }
-                )
-            );
+            .RuleFor(x => x.BaseCurrency, f => f.Finance.Currency().Code)
+            .RuleFor(x => x.OtherCurrencies, f => new[] { f.Finance.Currency().Code })
+            .RuleFor(x => x.UserId, f => f.Random.Int(1, 10))
+            .Generate();
     }
 
     public static GetUserRateCommand GenerateInvalidGetUserRateCommand()
     {
         return new Faker<GetUserRateCommand>()
-            .CustomInstantiator(f =>
-                new GetUserRateCommand(
-                    -1,
-                    null,
-                    null
-                )
-            );
+            .RuleFor(x => x.BaseCurrency, null as string)
+            .RuleFor(x => x.OtherCurrencies, null as string[])
+            .RuleFor(x => x.UserId, 0)
+            .Generate();
     }
 }

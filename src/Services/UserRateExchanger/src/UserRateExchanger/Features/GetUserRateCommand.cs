@@ -2,4 +2,9 @@
 
 namespace UserRateExchanger.Features;
 
-public record GetUserRateCommand(int UserId, string BaseCurrency, string[] OtherSymbols) : IRequest<GetUserRateResponseDto>;
+public class GetUserRateCommand : IRequest<GetUserRateResponseDto>
+{
+    public int UserId { get; set; }
+    public string BaseCurrency { get; set; }
+    public string[] OtherCurrencies { get; set; }
+}

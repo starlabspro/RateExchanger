@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AutoMapper;
+using Microsoft.Extensions.Options;
 using RestSharp;
 
 namespace BuildingBlocks.Contracts;
@@ -16,6 +17,7 @@ public interface IRateExchangerService
 public class RateExchangerService : IRateExchangerService
 {
     private readonly RestClient _client;
+    private const string RateExchangeApi = "/api/v1/RateExchanger";
 
     public RateExchangerService(IOptions<RateExchangerOptions> rateExchangerOptions)
     {
@@ -23,14 +25,30 @@ public class RateExchangerService : IRateExchangerService
             .AddDefaultHeader("apikey", rateExchangerOptions.Value.ApiKey);
     }
 
+    /// <inheritdoc />
     public async Task<GetExchangeRateResponse> GetExchangeRateAsync(GetExchangeRateRequest request)
     {
-        return await _client.GetJsonAsync<GetExchangeRateResponse>(request.BaseCurrency, request.OtherSymbols);
+        var restRequest = new RestRequest(RateExchangeApi, Method.Post).AddJsonBody(request);
+        return await _client.PostAsync<GetExchangeRateResponse>(restRequest);
     }
 }
 
-public record RateExchangerOptions(string BaseUrl, string ApiKey);
+public class RateExchangerOptions
+{
+    /// <summary>
+    /// The Base Url for the Rate Exchanger API.
+    /// </summary>
+    public string BaseUrl { get; set; }
+    /// <summary>
+    /// The API Key for the Rate Exchanger API.
+    /// </summary>
+    public string ApiKey { get; set; }
+}
 
-public record GetExchangeRateRequest(string BaseCurrency, string[] OtherSymbols);
+public class GetExchangeRateRequest
+{
+    public string BaseCurrency { get; set; } 
+    public string[] OtherCurrencies { get; set; }
+};
 
 public record GetExchangeRateResponse(string BaseCurrency, Dictionary<string, decimal> Rates);
