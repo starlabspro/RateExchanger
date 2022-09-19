@@ -29,7 +29,7 @@ public class GetRateCommandHandlerTests
 
         mapperMock
             .Setup(x => x.Map<GetRateResponseDto>(It.IsAny<GetRateCommand>()))
-            .Returns(TestHelper.GenerateValidGetRateResponseDto());
+            .Returns(TestHelper.GenerateValidGetRateResponseDto(baseCurrency));
 
         var sut = new GetRateCommandHandler(
             loggerMock.Object,
@@ -45,5 +45,11 @@ public class GetRateCommandHandlerTests
 
         // Assert
         result.Should().NotBeNull();
+        result.BaseCurrency.Should().Be(baseCurrency);
+        result.Rates.Should().NotBeEmpty();
+        cacheManagerMock.Verify(x => x.GetAsync(baseCurrency, It.IsAny<CancellationToken>()), Times.Once);
+        mapperMock.Verify(x => x.Map<GetRateResponseDto>(It.IsAny<GetRateCommand>()), Times.Once);
+        cacheManagerMock.VerifyNoOtherCalls();
+        mapperMock.VerifyNoOtherCalls();
     }
 }

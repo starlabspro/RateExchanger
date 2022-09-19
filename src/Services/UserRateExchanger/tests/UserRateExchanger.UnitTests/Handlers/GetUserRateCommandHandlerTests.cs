@@ -67,6 +67,8 @@ public class GetUserRateCommandHandlerTests
 
         _cacheManagerMock.Setup(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(dateTimestamps);
+        _cacheManagerMock.Setup(x => x.IsValidAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
         _mapperMock.Setup(x => x.Map<GetExchangeRateRequest>(It.IsAny<GetUserRateCommand>()))
             .Returns(exchangeRateRequest);
         _rateExchangerServiceMock.Setup(x => x.GetExchangeRateAsync(exchangeRateRequest))
@@ -77,5 +79,14 @@ public class GetUserRateCommandHandlerTests
         var result = _sut.Handle(userRateCommand, default);
 
         result.Should().NotBeNull();
+        _cacheManagerMock.Verify(x => x.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        _cacheManagerMock.Verify(x => x.IsValidAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+        _cacheManagerMock.Verify(x => x.UpdateAsync(It.IsAny<string>(), It.IsAny<List<DateTime>>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mapperMock.Verify(x => x.Map<GetExchangeRateRequest>(It.IsAny<GetUserRateCommand>()), Times.Once);
+        _mapperMock.Verify(x => x.Map<GetUserRateResponseDto>(It.IsAny<GetExchangeRateResponse>()), Times.Once);
+        _rateExchangerServiceMock.Verify(x => x.GetExchangeRateAsync(exchangeRateRequest), Times.Once);
+        _cacheManagerMock.VerifyNoOtherCalls();
+        _mapperMock.VerifyNoOtherCalls();
+        _rateExchangerServiceMock.VerifyNoOtherCalls();
     }
 }

@@ -56,6 +56,12 @@ public class CacheManagerTests
         cachedValues.Should().NotBeNull();
         cachedValues.Should().ContainKey("USD").WhoseValue.Should().Be(1.0m);
         cachedValues.Should().ContainKey("EUR").WhoseValue.Should().Be(0.9m);
+        optionsMock.Verify(x => x.Value, Times.Once);
+        providerMock.Verify(x => x.GetAsync<Dictionary<string, decimal>>(key, It.IsAny<CancellationToken>()), Times.Once);
+        factoryMock.Verify(x => x.GetCachingProvider(CacheName), Times.Once);
+        optionsMock.VerifyNoOtherCalls();
+        providerMock.VerifyNoOtherCalls();
+        factoryMock.VerifyNoOtherCalls();
     }
 
     [Fact]
@@ -97,5 +103,12 @@ public class CacheManagerTests
 
         // Assert
         cachedValues.Should().BeNull();
+        optionsMock.Verify(x => x.Value, Times.Once);
+        providerMock.Verify(x => x.GetAsync<Dictionary<string, decimal>>(key, It.IsAny<CancellationToken>()), Times.Never);
+        providerMock.Verify(x => x.GetAsync<Dictionary<string, decimal>>(invalidKey, It.IsAny<CancellationToken>()), Times.Once);
+        factoryMock.Verify(x => x.GetCachingProvider(CacheName), Times.Once);
+        optionsMock.VerifyNoOtherCalls();
+        providerMock.VerifyNoOtherCalls();
+        factoryMock.VerifyNoOtherCalls();
     }
 }
