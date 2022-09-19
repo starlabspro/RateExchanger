@@ -8,7 +8,7 @@ namespace BuildingBlocks.Middleware;
 
 public static class Extensions
 {
-    public static void ConfigureExceptionHandler(this IApplicationBuilder app, ILoggerFactory loggerFactory)
+    public static void UseExceptionHandler(this IApplicationBuilder app, ILoggerFactory loggerFactory)
     {
         var logger = loggerFactory.CreateLogger("Global exception logger");
         app.UseExceptionHandler(appError =>

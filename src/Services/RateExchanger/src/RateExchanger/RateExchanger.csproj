@@ -17,4 +17,8 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\BuildingBlocks\src\BuildingBlocks.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Validators" />
+    </ItemGroup>
 </Project>

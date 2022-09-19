@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using RateExchanger.Features;
 
-namespace RateExchanger.Validators;
+namespace RateExchanger.Features;
 
 public class GetRateCommandValidator : AbstractValidator<GetRateCommand>
 {
@@ -10,6 +9,7 @@ public class GetRateCommandValidator : AbstractValidator<GetRateCommand>
         RuleFor(x => x.BaseCurrency)
             .NotNull()
             .NotEmpty()
-            .WithMessage($"{nameof(GetRateCommand.BaseCurrency)} must not be null");
+            .Length(3)
+            .WithMessage($"{nameof(GetRateCommand.BaseCurrency)} must be a valid 3 letter currency code");
     }
 }
