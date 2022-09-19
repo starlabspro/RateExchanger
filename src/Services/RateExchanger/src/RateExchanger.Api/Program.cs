@@ -1,6 +1,8 @@
 using BuildingBlocks.Caching;
 using BuildingBlocks.EFCore;
 using BuildingBlocks.FixerClient;
+using BuildingBlocks.Middleware;
+using BuildingBlocks.Swagger;
 using BuildingBlocks.Validation;
 using FluentValidation;
 using MediatR;
@@ -8,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using RateExchanger;
 using RateExchanger.Data;
-using RateExchanger.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,7 @@ builder.Services.AddInMemoryCache(builder.Configuration);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.SetupSwaggerGen();
+builder.Services.SetupSwaggerGen(builder.Configuration);
 // builder.Services.AddVersionedApiExplorer();
 builder.Services.AddApiVersioning(options =>
 {
@@ -40,6 +41,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+var loggerFactory = app.Services.GetService<ILoggerFactory>();
+app.ConfigureExceptionHandler(loggerFactory);
 
 app.UseHttpsRedirection();
 
