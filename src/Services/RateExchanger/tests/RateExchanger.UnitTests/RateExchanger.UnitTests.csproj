@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\UserRateExchanger.Api\UserRateExchanger.Api.csproj" />
+      <ProjectReference Include="..\..\src\RateExchanger.Api\RateExchanger.Api.csproj" />
     </ItemGroup>
 
 </Project>

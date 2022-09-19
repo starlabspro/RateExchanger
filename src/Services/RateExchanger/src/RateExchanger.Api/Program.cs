@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using RateExchanger;
 using RateExchanger.Data;
+using RateExchanger.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationHandle
 builder.Services.AddDbContext<RateExchangerContext>(builder.Configuration);
 builder.Services.AddFixerClient(builder.Configuration);
 builder.Services.AddInMemoryCache(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(RateExchangerProfile).Assembly);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

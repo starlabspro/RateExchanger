@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRateExchanger.Api", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRateExchanger.UnitTests", "src\Services\UserRateExchanger\tests\UserRateExchanger.UnitTests\UserRateExchanger.UnitTests.csproj", "{B7F107C0-74D1-426E-9E79-87B63D15C614}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateExchanger.UnitTests", "src\Services\RateExchanger\tests\RateExchanger.UnitTests\RateExchanger.UnitTests.csproj", "{759CC97E-6878-4203-BD97-858A9D591DFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,7 @@ Global
 		{8714C5DB-D3D4-4747-A6BD-8B71A5565D8C} = {43DA74F7-4DEE-438D-B7E0-5956CC79050A}
 		{DEF0B780-A08D-49E9-86CE-0A82549E5C2A} = {43DA74F7-4DEE-438D-B7E0-5956CC79050A}
 		{B7F107C0-74D1-426E-9E79-87B63D15C614} = {3C4CAF16-2A5B-4A2F-9225-818E3E36F858}
+		{759CC97E-6878-4203-BD97-858A9D591DFC} = {B6DA3D3A-D53B-4082-82A0-1F71C1764526}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CDCBADB3-C9CA-47B4-ADF6-55161BB5AD50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -87,5 +90,9 @@ Global
 		{B7F107C0-74D1-426E-9E79-87B63D15C614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7F107C0-74D1-426E-9E79-87B63D15C614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7F107C0-74D1-426E-9E79-87B63D15C614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{759CC97E-6878-4203-BD97-858A9D591DFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{759CC97E-6878-4203-BD97-858A9D591DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{759CC97E-6878-4203-BD97-858A9D591DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{759CC97E-6878-4203-BD97-858A9D591DFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

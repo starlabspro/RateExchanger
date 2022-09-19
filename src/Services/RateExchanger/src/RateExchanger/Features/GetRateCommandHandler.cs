@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Caching;
+﻿using AutoMapper;
+using BuildingBlocks.Caching;
 using BuildingBlocks.FixerClient;
 using EasyCaching.Core;
 using MediatR;
@@ -17,18 +18,21 @@ public class GetRateCommandHandler : IRequestHandler<GetRateCommand, GetRateResp
     private readonly IFixerClient _fixerClient;
     private readonly IOptions<CacheOptions> _cacheOptions;
     private readonly IEasyCachingProvider _cachingProvider;
+    private readonly IMapper _mapper;
 
     public GetRateCommandHandler(
         ILogger<GetRateCommandHandler> logger,
         RateExchangerContext rateExchangerContext,
         IFixerClient fixerClient,
         IEasyCachingProviderFactory factory,
-        IOptions<CacheOptions> cacheOptions)
+        IOptions<CacheOptions> cacheOptions,
+        IMapper mapper)
     {
         _logger = logger;
         _rateExchangerContext = rateExchangerContext;
         _fixerClient = fixerClient;
         _cacheOptions = cacheOptions;
+        _mapper = mapper;
 
         _cachingProvider = factory.GetCachingProvider(_cacheOptions.Value.CacheName);
     }
@@ -40,11 +44,9 @@ public class GetRateCommandHandler : IRequestHandler<GetRateCommand, GetRateResp
 
         if (cachedExchangeRates.HasValue)
         {
-            return new GetRateResponseDto
-            {
-                BaseCurrency = request.BaseCurrency,
-                Rates = cachedExchangeRates.Value
-            };
+            var response = _mapper.Map<GetRateResponseDto>(request);
+            response.Rates = cachedExchangeRates.Value;
+            return response;
         }
 
         var latestExchangeRates = await _fixerClient.GetLatestAsync(request.BaseCurrency, request.OtherCurrencies);
@@ -66,10 +68,6 @@ public class GetRateCommandHandler : IRequestHandler<GetRateCommand, GetRateResp
 
         await _rateExchangerContext.SaveChangesAsync(cancellationToken);
 
-        return new GetRateResponseDto()
-        {
-            Rates = latestExchangeRates.Rates,
-            BaseCurrency = latestExchangeRates.Base
-        };
+        return _mapper.Map<GetRateResponseDto>(latestExchangeRates);
     }
 }
