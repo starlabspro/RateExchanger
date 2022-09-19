@@ -9,7 +9,6 @@
         /// Specifies the Base Uri.
         /// </summary>
         public string BaseUri { get; set; }
-
         /// <summary>
         /// Specifies the Access Key.
         /// </summary>

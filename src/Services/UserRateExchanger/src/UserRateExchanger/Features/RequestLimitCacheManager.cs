@@ -22,7 +22,7 @@ public class RequestLimitCacheManager : ICacheManager<List<DateTime>>
         _cachingProvider = factory.GetCachingProvider(_cacheOptions.Value.CacheName);
     }
 
-    public async Task<List<DateTime>> GetAsync(string key, CancellationToken cancellationToken)
+    public async Task<List<DateTime>?> GetAsync(string key, CancellationToken cancellationToken)
     {
         var cacheValue = await _cachingProvider.GetAsync<List<DateTime>>(key, cancellationToken);
 

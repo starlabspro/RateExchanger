@@ -8,6 +8,10 @@ public class RateExchangerContext : GenericDbContext
 {
     public DbSet<RateExchange> RateExchanges { get; set; }
 
+    public RateExchangerContext() : base()
+    {
+    }
+
     public RateExchangerContext(DbContextOptions options) : base(options)
     {
     }

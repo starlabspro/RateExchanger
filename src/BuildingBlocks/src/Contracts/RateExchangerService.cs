@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using RestSharp;
 
 namespace BuildingBlocks.Contracts;
@@ -33,6 +32,9 @@ public class RateExchangerService : IRateExchangerService
     }
 }
 
+/// <summary>
+/// The Rate Exchanger Options.
+/// </summary>
 public class RateExchangerOptions
 {
     /// <summary>

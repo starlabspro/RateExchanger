@@ -25,6 +25,7 @@ public class GetUserRateCommandHandler : IRequestHandler<GetUserRateCommand, Get
         _cacheManager = cacheManager;
     }
 
+    /// <inheritdoc />
     public async Task<GetUserRateResponseDto> Handle(GetUserRateCommand command, CancellationToken cancellationToken)
     {
         var isValid = await _cacheManager.IsValidAsync($"{command.UserId}", cancellationToken);

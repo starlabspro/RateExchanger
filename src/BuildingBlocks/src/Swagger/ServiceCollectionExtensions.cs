@@ -4,6 +4,9 @@ using Microsoft.OpenApi.Models;
 
 namespace BuildingBlocks.Swagger;
 
+/// <summary>
+/// The Service Collection Extensions.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>

@@ -14,7 +14,7 @@ public class GetUserRateCommandHandlerTests
     private readonly Mock<ICacheManager<List<DateTime>>> _cacheManagerMock;
     private readonly Mock<IRateExchangerService> _rateExchangerServiceMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly GetUserRateCommandHandler _userRateCommandHandlerStub;
+    private readonly GetUserRateCommandHandler _sut;
 
     public GetUserRateCommandHandlerTests()
     {
@@ -22,7 +22,7 @@ public class GetUserRateCommandHandlerTests
         _cacheManagerMock = new Mock<ICacheManager<List<DateTime>>>();
         _rateExchangerServiceMock = new Mock<IRateExchangerService>();
         _mapperMock = new Mock<IMapper>();
-        _userRateCommandHandlerStub = new GetUserRateCommandHandler(_loggerMock.Object,
+        _sut = new GetUserRateCommandHandler(_loggerMock.Object,
             _rateExchangerServiceMock.Object, _mapperMock.Object, _cacheManagerMock.Object);
     }
 
@@ -74,7 +74,7 @@ public class GetUserRateCommandHandlerTests
         _mapperMock.Setup(x => x.Map<GetUserRateResponseDto>(It.IsAny<GetExchangeRateResponse>()))
             .Returns(userRateResponseDto);
 
-        var result = _userRateCommandHandlerStub.Handle(userRateCommand, default);
+        var result = _sut.Handle(userRateCommand, default);
 
         result.Should().NotBeNull();
     }
