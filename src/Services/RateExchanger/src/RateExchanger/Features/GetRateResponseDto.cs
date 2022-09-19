@@ -2,6 +2,7 @@
 
 public class GetRateResponseDto
 {
-    public string Currency { get; set; }
-    public decimal Rate { get; set; }
+    public string BaseCurrency { get; set; }
+
+    public Dictionary<string, decimal> Rates { get; set; }
 }

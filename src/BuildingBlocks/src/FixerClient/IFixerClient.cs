@@ -8,11 +8,10 @@ namespace BuildingBlocks.FixerClient;
 public interface IFixerClient
 {
     /// <summary>
-    /// Calls Fixer to convert the amount from one currency to another.
+    /// Calls Fixer to get the latest exchange rates.
     /// </summary>
-    /// <param name="to">The currency to convert to.</param>
-    /// <param name="from">The currency to convert from.</param>
-    /// <param name="amount">The amount to be converted.</param>
-    /// <returns>The <see cref="ConvertResponse"/>.</returns>
-    Task<ConvertResponse?> ConvertAsync(string to, string from, decimal amount);
+    /// <param name="baseCurrency">The Base Currency.</param>
+    /// <param name="symbols">The Currency symbols.</param>
+    /// <returns>The <see cref="GetLatestRatesResponse"/>.</returns>
+    Task<GetLatestRatesResponse> GetLatestAsync(string baseCurrency, params string[] symbols);
 }

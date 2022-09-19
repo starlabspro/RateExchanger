@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.EFCore;
 using Microsoft.EntityFrameworkCore;
-using RateExchanger.Models;
+using RateExchanger.Data.Models;
 
 namespace RateExchanger.Data;
 

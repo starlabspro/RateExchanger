@@ -16,11 +16,10 @@ namespace BuildingBlocks.FixerClient
         }
 
         /// <inheritdoc />
-        public async Task<ConvertResponse?> ConvertAsync(string to, string from, decimal amount)
+        public async Task<GetLatestRatesResponse> GetLatestAsync(string baseCurrency, params string[] symbols)
         {
-            var response = await _client.GetJsonAsync<ConvertResponse>(
-                $"convert?to={to}&from={from}&amount={amount}");
-            return response;
+            return await _client.GetJsonAsync<GetLatestRatesResponse>(
+                $"latest?symbols={string.Join(",", symbols)}&base={baseCurrency}");
         }
     }
 }

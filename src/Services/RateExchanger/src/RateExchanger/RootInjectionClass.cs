@@ -1,6 +1,6 @@
 ﻿namespace RateExchanger;
 
-public class MediatRFile
+public class RootInjectionClass
 {
     
 }

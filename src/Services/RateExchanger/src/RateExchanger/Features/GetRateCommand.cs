@@ -2,4 +2,4 @@
 
 namespace RateExchanger.Features;
 
-public record GetRateCommand(string To, string From, decimal Amount) : IRequest<GetRateResponseDto>;
+public record GetRateCommand(string BaseCurrency, string[] OtherCurrencies) : IRequest<GetRateResponseDto>;

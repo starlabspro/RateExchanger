@@ -2,15 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace RateExchanger.Models;
+namespace RateExchanger.Data.Models;
 
 public class RateExchange : BaseEntity
 {
-    public string FromCurrency { get; set; }
+    public string BaseCurrency { get; set; }
 
-    public string ToCurrency { get; set; }
-
-    public string Rate { get; set; }
+    public string Rates { get; set; }
 }
 
 public class RateExchangeConfiguration : IEntityTypeConfiguration<RateExchange>
@@ -22,19 +20,12 @@ public class RateExchangeConfiguration : IEntityTypeConfiguration<RateExchange>
         builder.HasKey(r => r.Id);
 
         builder
-            .Property(r => r.Id)
-            .ValueGeneratedOnAdd();
-
-        builder
-            .Property(r => r.FromCurrency)
+            .Property(r => r.BaseCurrency)
             .IsRequired();
 
         builder
-            .Property(r => r.ToCurrency)
-            .IsRequired();
-
-        builder
-            .Property(r => r.Rate)
+            .Property(r => r.Rates)
+            .HasColumnType("varchar(max)")
             .IsRequired();
     }
 }

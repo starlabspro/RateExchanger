@@ -1,5 +1,8 @@
+using BuildingBlocks.Caching;
 using BuildingBlocks.EFCore;
 using BuildingBlocks.FixerClient;
+using BuildingBlocks.Validation;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -10,9 +13,12 @@ using RateExchanger.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMediatR(typeof(MediatRFile).Assembly);
+builder.Services.AddMediatR(typeof(RootInjectionClass).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(RootInjectionClass).Assembly);
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationHandler<,>));
 builder.Services.AddDbContext<RateExchangerContext>(builder.Configuration);
 builder.Services.AddFixerClient(builder.Configuration);
+builder.Services.AddInMemoryCache(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
