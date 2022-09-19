@@ -8,7 +8,7 @@ public class RateExchangerContextFactory : IDesignTimeDbContextFactory<RateExcha
     public RateExchangerContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<RateExchangerContext>();
-        optionsBuilder.UseSqlServer("Server=.;Database=rateexchanger;MultipleActiveResultSets=true;User Id=sa;Password=Deadpool123!;");
+        optionsBuilder.UseSqlServer("Server=.;Database=rateexchanger;MultipleActiveResultSets=true;User Id=sa;Password=sample123!;");
 
         return new RateExchangerContext(optionsBuilder.Options);
     }
