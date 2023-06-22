@@ -1,7 +1,6 @@
-namespace BuildingBlocks.EFCore
+namespace BuildingBlocks.EFCore;
+
+public interface IDataSeeder
 {
-    public interface IDataSeeder
-    {
-        Task SeedDataAsync();
-    }
+    Task SeedDataAsync();
 }

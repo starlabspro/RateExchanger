@@ -13,6 +13,7 @@ public interface ICacheManager<T>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/>.</param>
     /// <returns></returns>
     Task<T?> GetAsync(string key, CancellationToken cancellationToken);
+
     /// <summary>
     /// Validates the value in the cache.
     /// </summary>
@@ -20,6 +21,7 @@ public interface ICacheManager<T>
     /// <param name="cancellationToken">The <see cref="CancellationToken"/>.</param>
     /// <returns></returns>
     Task<bool> IsValidAsync(string key, CancellationToken cancellationToken);
+
     /// <summary>
     /// Updates the values in the cache.
     /// </summary>

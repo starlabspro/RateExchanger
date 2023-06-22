@@ -17,20 +17,21 @@ public static class ServiceCollectionExtensions
     /// <returns>The <see cref="IServiceCollection"/>.</returns>
     public static IServiceCollection AddInMemoryCache(this IServiceCollection services, IConfiguration configuration)
     {
-        var cacheSection = configuration.GetSection("Cache");
+        var cacheSection = configuration.GetSection(nameof(CacheOptions.CacheName));
 
         services.Configure<CacheOptions>(cacheSection);
 
         var cacheOptions = cacheSection.Get<CacheOptions>();
+
         return services.AddEasyCaching(options =>
         {
             options.UseInMemory(config =>
             {
-                config.DBConfig = new InMemoryCachingOptions()
+                config.DBConfig = new InMemoryCachingOptions
                 {
-                    SizeLimit = cacheOptions.SizeLimit
+                    SizeLimit = cacheOptions?.SizeLimit
                 };
-            }, cacheOptions.CacheName);
+            }, cacheOptions?.CacheName);
         });
     }
 }

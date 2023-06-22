@@ -28,8 +28,8 @@ public static class ServiceCollectionExtensions
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Version = swaggerOptions.Version,
-                    Title = swaggerOptions.Title
+                    Version = swaggerOptions?.Version ?? "v1",
+                    Title = swaggerOptions?.Title ?? "Swagger API Docs"
                 });
             });
     }

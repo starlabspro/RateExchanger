@@ -1,3 +1,5 @@
+using System.Reflection;
+using BuildingBlocks.AutoMapper;
 using BuildingBlocks.Caching;
 using BuildingBlocks.EFCore;
 using BuildingBlocks.FixerClient;
@@ -16,20 +18,21 @@ using RateExchanger.Profiles;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMediatR(typeof(RootInjectionClass).Assembly);
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddValidatorsFromAssembly(typeof(RootInjectionClass).Assembly);
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationHandler<,>));
 builder.Services.AddDbContext<RateExchangerContext>(builder.Configuration);
 builder.Services.AddFixerClient(builder.Configuration);
 builder.Services.AddInMemoryCache(builder.Configuration);
-builder.Services.AddAutoMapper(typeof(RateExchangerProfile).Assembly);
+builder.Services.AddAutoMapperAssemblies(typeof(RateExchangerProfile).Assembly);
 builder.Services.AddTransient<ICacheManager<Dictionary<string, decimal>?>, RateExchangerCacheManager>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.SetupSwaggerGen(builder.Configuration);
-// builder.Services.AddVersionedApiExplorer();
+
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0);

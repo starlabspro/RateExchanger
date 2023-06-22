@@ -20,8 +20,8 @@ public class RateExchangerService : IRateExchangerService
 
     public RateExchangerService(IOptions<RateExchangerOptions> rateExchangerOptions)
     {
-        _client = new RestClient(rateExchangerOptions.Value.BaseUrl)
-            .AddDefaultHeader("apikey", rateExchangerOptions.Value.ApiKey);
+        _client = new RestClient(rateExchangerOptions.Value.BaseUrl);
+        _client.AddDefaultHeader("apikey", rateExchangerOptions.Value.ApiKey);
     }
 
     /// <inheritdoc />
@@ -41,6 +41,7 @@ public class RateExchangerOptions
     /// The Base Url for the Rate Exchanger API.
     /// </summary>
     public string BaseUrl { get; set; }
+
     /// <summary>
     /// The API Key for the Rate Exchanger API.
     /// </summary>
@@ -49,8 +50,8 @@ public class RateExchangerOptions
 
 public class GetExchangeRateRequest
 {
-    public string BaseCurrency { get; set; } 
+    public string BaseCurrency { get; set; }
     public string[] OtherCurrencies { get; set; }
-};
+}
 
 public record GetExchangeRateResponse(string BaseCurrency, Dictionary<string, decimal> Rates);

@@ -6,6 +6,7 @@ public class GetUserRateResponseDto
     /// The Base Currency.
     /// </summary>
     public string BaseCurrency { get; set; }
+
     /// <summary>
     /// The Rates.
     /// </summary>

@@ -8,11 +8,13 @@ public class CacheOptions
     /// <summary>
     /// Cache Name.
     /// </summary>
-    public string CacheName { get; set; }
+    public string CacheName { get; set; } = "DefaultCache";
+
     /// <summary>
     /// Cache size limit.
     /// </summary>
-    public int SizeLimit { get; set; }
+    public int SizeLimit { get; set; } = 1000;
+
     /// <summary>
     /// Cache Expiration Time in Milliseconds. Default is 30 minutes.
     /// </summary>

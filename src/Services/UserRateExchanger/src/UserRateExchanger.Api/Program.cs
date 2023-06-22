@@ -1,3 +1,4 @@
+using System.Reflection;
 using BuildingBlocks.Caching;
 using BuildingBlocks.Contracts;
 using BuildingBlocks.Middleware;
@@ -14,7 +15,8 @@ using UserRateExchanger.Profiles;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddMediatR(typeof(RootInjectionClass).Assembly);
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddValidatorsFromAssembly(typeof(RootInjectionClass).Assembly);
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationHandler<,>));
 builder.Services.AddRateExchangerService(builder.Configuration);
